@@ -40,7 +40,7 @@ getBarrelBitmap();
 import fs from "fs";
 import { PCX, Transparency } from "elma-pcx";
 
-const getPcx = async (filename, transparency = Transparency.TopLeft) => {
+const getPcx = async (filename, transparency = Transparency.Solid) => {
   const file = fs.readFileSync(filename);
   const pcx = new PCX(file);
 

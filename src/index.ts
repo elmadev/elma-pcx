@@ -5,6 +5,13 @@
  * When colorizing an image, you can specify the transparency as in Elma LGRs
  */
 
+/**
+ * Enum for transparency as used by LGR files
+ *  - Solid: No transparency
+ *  - Palette: Palette id 0 is transparent
+ *  - TopLeft/TopRight/BottomLeft/BottomRight: selected pixel's palette id is transparent
+ * @readonly
+ */
 export enum Transparency {
   Solid = 10,
   Palette = 11,
@@ -14,6 +21,10 @@ export enum Transparency {
   BottomRight = 15,
 };
 
+/**
+ * PCX header data, restricted to the parameters that are not ignored by Elasto Mania
+ * @interface
+ */
 interface PCXHeader {
   version: number;
   encoding: number;
@@ -74,6 +85,11 @@ export class PCX {
     this._pixels = null;
   }
 
+  /**
+   * Reads a 16-bit uint from the data buffer
+   * @param {number} - byte offset of the raw data
+   * @returns {number} 16-bit uint
+   */
   _readLEWord(offset: number) {
     return this.byteView[offset] | (this.byteView[offset + 1] << 8);
   }
@@ -138,7 +154,7 @@ export class PCX {
 
   /**
    * Calculates which palette id is transparent
-   * @param {number} transparency - An enum value from Transparency
+   * @param {Transparency} transparency - An enum value from Transparency
    * @returns {number} The palette id that should be transparent
    */
   _getTransparencyPaletteId(transparency: Transparency) {
@@ -191,10 +207,10 @@ export class PCX {
    * const imageData = new ImageData(pcxFile.getImage(), pcxFile.width, pcxFile.height)
    * const imageBitmap = await createImageBitmap(imageData)
    * @param {Uint8Array} palette - A palette from getPalette()
-   * @param {Uint8Array} transparency - A transparency option from Transparency
+   * @param {Transparency} transparency - A transparency option from Transparency
    * @returns {Uint8Array} Flattened RGBA pixel array of size 4*width*height
    */
-  getImage(palette: Uint8Array, transparency: number) {
+  getImage(palette: Uint8Array, transparency: Transparency) {
     const transparentPaletteId = this._getTransparencyPaletteId(transparency);
     const colorData = this._colorize(palette, transparentPaletteId);
     return colorData;
@@ -208,7 +224,7 @@ export class PCX {
  * @param {number} width - Image width
  * @param {number} height - Image height
  * @param {Uint8Array} palette - A 768-byte palette as provided by getPalette()
- * @returns {Uint8Array}
+ * @returns {Uint8Array} file data buffer
  */
 export const writePCX = (pixels: Uint8Array, width: number, height: number, palette?: Uint8Array | null) => {
   const headerBuffer = new Uint8Array(128);

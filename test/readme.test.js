@@ -32,7 +32,7 @@ test('Opening a PCX File via an LGR', () => {
 });
 
 test('Directly Opening a PCX File', () => {
-  const getPcx = async (filename, transparency = Transparency.TopLeft) => {
+  const getPcx = async (filename, transparency = Transparency.Solid) => {
     const file = fs.readFileSync(filename);
     const pcx = new PCX(file);
 
