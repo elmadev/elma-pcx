@@ -49,6 +49,7 @@
     "typescript-eslint": "^8.23.0"
   },
   "files": [
-    "lib/**/*"
+    "lib/**/*",
+    "!**/*.tsbuildinfo"
   ]
 }
