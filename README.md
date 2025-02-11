@@ -27,9 +27,7 @@ const getBarrelBitmap = async () => {
   const barrel = getImageData(lgr, 'barrel');
   const pixelBitmap = barrel.pcx.getPixels();
   const pixelColors = barrel.pcx.getImage(lgrPalette, barrel.pictureList.transparency);
-  const imageData = new ImageData(pixelColors, barrel.pcx.width, barrel.pcx.height);
-  const imageBitmap = await createImageBitmap(imageData);
-  return { imageData, imageBitmap };
+  return pixelColors;
 };
 
 getBarrelBitmap();
@@ -47,9 +45,7 @@ const getPcx = async (filename, transparency = Transparency.Solid) => {
   const palette = pcx.getPalette();
   const pixelBitmap = pcx.getPixels();
   const pixelColors = pcx.getImage(palette, transparency);
-  const imageData = new ImageData(pixelColors, pcx.width, pcx.height);
-  const imageBitmap = await createImageBitmap(imageData);
-  return { imageData, imageBitmap };
+  return pixelColors;
 };
 getPcx('snp00000.pcx');
 ```
@@ -73,4 +69,15 @@ const height = 2;
 const pixels = new Uint8Array([0, 0, 255, 255]);
 const palette = DefaultLGRPalette;
 writeFile(filename, pixels, width, height, palette);
+```
+
+## Getting Image Data for a Browser Canvas
+```
+const getImage = (fileBuffer) => {
+  const pcx = new PCX(fileBuffer);
+  const pixelColors = pcx.getImage(palette, transparency);
+  const imageData = new ImageData(pixelColors, pcx.width, pcx.height);
+  const imageBitmap = await createImageBitmap(imageData);
+  return { imageData, imageBitmap };
+};
 ```

@@ -1,6 +1,6 @@
 {
   "name": "elma-pcx",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "PCX decoder and encoder for Elasto Mania",
   "types": "./lib/types/index.d.ts",
   "main": "./lib/cjs/index.js",
@@ -14,9 +14,10 @@
     }
   },
   "scripts": {
-    "test": "jest --coverage",
+    "test": "jest --coverage && npm publish --dry-run",
+    "pack": "npm pack",
     "clean": "del-cli ./lib",
-    "build": "npm run clean && tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json",
+    "build": "npm run clean && tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json && node ./scripts/addTypeModule.mjs",
     "prepack": "npm run build"
   },
   "repository": {
