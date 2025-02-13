@@ -23,9 +23,7 @@ test('Opening a PCX File via an LGR', () => {
     const barrel = getImageData(lgr, 'barrel');
     const pixelBitmap = barrel.pcx.getPixels();
     const pixelColors = barrel.pcx.getImage(lgrPalette, barrel.pictureList.transparency);
-    //const imageData = new ImageData(pixelColors, barrel.pcx.width, barrel.pcx.height);
-    //const imageBitmap = await createImageBitmap(imageData);
-    //return { imageData, imageBitmap };
+    return pixelColors;
   };
 
   getBarrelBitmap();
@@ -39,9 +37,7 @@ test('Directly Opening a PCX File', () => {
     const palette = pcx.getPalette();
     const pixelBitmap = pcx.getPixels();
     const pixelColors = pcx.getImage(palette, transparency);
-    //const imageData = new ImageData(pixelColors, pcx.width, pcx.height);
-    //const imageBitmap = await createImageBitmap(imageData);
-    //return { imageData, imageBitmap };
+    return pixelColors;
   };
   getPcx('./test/assets/snp00000.pcx');
 });
@@ -62,3 +58,13 @@ test('Writing a PCX File', () => {
   const palette = DefaultLGRPalette;
   writeFile(filename, pixels, width, height, palette);
 });
+
+/*Getting Image Data for a Browser Canvas
+
+const getImage = (fileBuffer) => {
+  const pcx = new PCX(fileBuffer);
+  const pixelColors = pcx.getImage(palette, transparency);
+  const imageData = new ImageData(pixelColors, pcx.width, pcx.height);
+  const imageBitmap = await createImageBitmap(imageData);
+  return { imageData, imageBitmap };
+};*/
