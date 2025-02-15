@@ -1,6 +1,6 @@
 {
   "name": "elma-pcx",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "PCX decoder and encoder for Elasto Mania",
   "types": "./lib/types/index.d.ts",
   "main": "./lib/cjs/index.js",
@@ -44,6 +44,7 @@
     "eslint-plugin-prettier": "^5.2.3",
     "globals": "^15.14.0",
     "jest": "^29.7.0",
+    "pngjs": "^7.0.0",
     "prettier": "^3.4.2",
     "ts-jest": "^29.2.5",
     "typescript": "^5.7.3",
