@@ -149,20 +149,3 @@ test('Loading and saving same Abc file', () => {
   };
   checkAbc('./test/assets/abc/small.abc');
 });
-
-// TEST
-
-test('Directly Opening a SPR File', () => {
-  const getSpr = async (filename) => {
-    const file = fs.readFileSync(filename);
-    const spr = Sprite.fromBuffer(file);
-    const img = spr.getImage(DefaultLGRPalette);
-    fs.writeFileSync('temp/char.buf', img);
-    const png = new pngjs.PNG({ width: spr.width, height: spr.height });
-
-    png.data = Buffer.from(img);
-    const buff = pngjs.PNG.sync.write(png);
-    fs.writeFileSync('temp/char.png', buff);
-  };
-  getSpr('./test/assets/abc/char.spr');
-});
