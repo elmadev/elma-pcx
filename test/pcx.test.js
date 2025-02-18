@@ -2,8 +2,8 @@ import fs from 'fs';
 import { PCX, writePCX, DefaultLGRPalette, Transparency } from '../src';
 
 test('PCX read/write keeps file identity', () => {
-  const file = fs.readFileSync('./test/assets/snp00000.pcx');
-  const file2 = fs.readFileSync('./test/assets/snp00040.pcx');
+  const file = fs.readFileSync('./test/assets/pcx/snp00000.pcx');
+  const file2 = fs.readFileSync('./test/assets/pcx/snp00040.pcx');
   const pcx = new PCX(file);
   const pcx2 = new PCX(file2);
   const file3 = writePCX(
@@ -20,22 +20,22 @@ test('PCX read/write keeps file identity', () => {
 });
 
 describe.each([
-  'crashHeader',
-  'crashVersion',
-  'crashEncoding',
-  'crashBPP',
-  'crashBitplanes',
-])('Invalid PCX Files', (filename) => {
+  ['crashHeader', 'Invalid PCX file'],
+  ['crashVersion', 'Only Version 3.0 PCX files are supported'],
+  ['crashEncoding', 'Invalid PCX encoding'],
+  ['crashBPP', 'Only 8bpp PCX files are supported'],
+  ['crashBitplanes', 'Only single bitplane PCX files are supported (Extended VGA)'],
+])('Invalid PCX Files', (filename, errorMessage) => {
   test(`Invalid PCX File ${filename}`, () => {
-    const file = `./test/assets/${filename}.pcx`;
+    const file = `./test/assets/pcx/${filename}.pcx`;
     expect(() => {
       new PCX(fs.readFileSync(file));
-    }).toThrow();
+    }).toThrow(errorMessage);
   });
 });
 
 test('PCX without a palette', () => {
-  const pcx = new PCX(fs.readFileSync('./test/assets/noPalette.pcx'));
+  const pcx = new PCX(fs.readFileSync('./test/assets/pcx/noPalette.pcx'));
   expect(() => pcx.getPalette()).toThrow();
 });
 
@@ -48,7 +48,7 @@ test('Prevent writing invalid pcx files', () => {
 });
 
 test('Force compression to take a break at each scanline', () => {
-  const pcx = new PCX(fs.readFileSync('./test/assets/crossScanline.pcx'));
+  const pcx = new PCX(fs.readFileSync('./test/assets/pcx/crossScanline.pcx'));
   expect(() => pcx.getPixels()).toThrow();
 });
 
@@ -61,7 +61,7 @@ describe.each([
   [Transparency.BottomRight, [1079, 1919], [104, 40, 0, 0]],
 ])('Transparency', (transparency, coord, rgba) =>
   test(`Transparency ${transparency}`, () => {
-    const pcx = new PCX(fs.readFileSync('./test/assets/snp00062.pcx'));
+    const pcx = new PCX(fs.readFileSync('./test/assets/pcx/snp00062.pcx'));
     const pixels = pcx.getImage(pcx.getPalette(), transparency);
     const pixel = coord[0] * pcx.width + coord[1];
     expect(pixels[4 * pixel + 0]).toEqual(rgba[0]);

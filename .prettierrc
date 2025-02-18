@@ -15,5 +15,5 @@
   "embeddedLanguageFormatting": "auto",
   "experimentalTernaries": false,
   "filepath": ".\\src\\index.ts",
-  "parser": "babel"
+  "parser": "typescript"
 }

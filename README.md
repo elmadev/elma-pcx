@@ -1,13 +1,14 @@
 # elma-pcx
-.pcx NPM package for Elasto Mania and Action Supercross
+.pcx NPM package for Elasto Mania and Action Supercross with 100% test coverage!
+
+This package can also handle .abc and .spr files from these games.
 
 # Install
 `npm install elma-pcx`
 
 # Usage
 ## Opening a PCX File via an LGR
-`npm install elmajs`
-```
+```js
 import fs from 'fs';
 import { LGR } from "elmajs";
 import { PCX } from "elma-pcx";
@@ -34,7 +35,7 @@ getBarrelBitmap();
 ```
 
 ## Directly Opening a PCX File
-```
+```js
 import fs from "fs";
 import { PCX, Transparency } from "elma-pcx";
 
@@ -51,7 +52,7 @@ getPcx('snp00000.pcx');
 ```
 
 ## Writing a PCX File
-```
+```js
 import fs from "fs";
 import { writePCX, DefaultLGRPalette } from "elma-pcx";
 
@@ -72,7 +73,7 @@ writeFile(filename, pixels, width, height, palette);
 ```
 
 ## Getting Image Data for a Browser Canvas
-```
+```js
 const getImage = (fileBuffer) => {
   const pcx = new PCX(fileBuffer);
   const pixelColors = pcx.getImage(palette, transparency);
@@ -80,4 +81,32 @@ const getImage = (fileBuffer) => {
   const imageBitmap = await createImageBitmap(imageData);
   return { imageData, imageBitmap };
 };
+```
+
+## Extracting Image Data from an ABC8 File
+```js
+import pngjs from 'pngjs';
+
+const getAbc = async (filename) => {
+  if (!fs.existsSync(`./${filename}/`)) {
+    fs.mkdirSync(`./${filename}/`);
+  }
+  const file = fs.readFileSync(`./${filename}.abc`);
+  const abc = ABC8.fromBuffer(file);
+  for (let i = 0; i < abc.letters.length; i++) {
+    const letter = abc.letters[i];
+    const sprite = letter.sprite;
+    const img = sprite.getImage(DefaultLGRPalette);
+    const png = new pngjs.PNG({ width: sprite.width, height: sprite.height });
+    png.data = Buffer.from(img);
+    const buff = pngjs.PNG.sync.write(png);
+    fs.writeFileSync(`./${filename}/${letter.code}_${letter.y}.png`, buff);
+  }
+};
+getAbc('small');
+getAbc('medium');
+getAbc('large');
+getAbc('kisbetu1');
+getAbc('kisbetu2');
+getAbc('menu');
 ```
