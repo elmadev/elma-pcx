@@ -45,6 +45,14 @@ test('Prevent writing invalid pcx files', () => {
   expect(() => writePCX(pixels, 3, 2)).toThrow();
   expect(() => writePCX(pixels, 2, 2, DefaultLGRPalette)).not.toThrow();
   expect(() => writePCX(pixels, 2, 2, DefaultLGRPalette.slice(1))).toThrow();
+
+  const bigPixels = new Uint8Array(65536);
+  expect(() => writePCX(bigPixels, 65536, 1)).toThrow('Image dimensions are too large!');
+  expect(() => writePCX(bigPixels, 1, 65536)).toThrow('Image dimensions are too large!');
+  expect(() => writePCX(bigPixels, 65536, 65536)).toThrow('Image dimensions are too large!');
+  const mediumPixels = new Uint8Array(40000);
+  expect(() => writePCX(mediumPixels, 40000, 1)).not.toThrow();
+  expect(() => writePCX(mediumPixels, 1, 40000)).not.toThrow();
 });
 
 test('Force compression to take a break at each scanline', () => {

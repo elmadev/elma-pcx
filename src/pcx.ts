@@ -224,17 +224,42 @@ export const writePCX = (
   height: number,
   palette?: Uint8Array | null
 ) => {
+  // Calculate xmin, ymin, xmax, ymax values
+  if(width >= 2**16 || height >= 2**16) {
+      throw new Error('Image dimensions are too large!');
+  }
+  let xmin = 0;
+  let ymin = 0;
+  let xmax = width - 1;
+  let ymax = height - 1;
+  // Avoid overflow when a dimension is 32768-65535 by shifting image origin to -32768
+  const OVERFLOW_LIMIT = 2**15
+  if(xmax >= OVERFLOW_LIMIT) {
+    xmin = -OVERFLOW_LIMIT
+    xmax -= OVERFLOW_LIMIT
+  }
+  if(ymax >= OVERFLOW_LIMIT) {
+    ymin = -OVERFLOW_LIMIT
+    ymax -= OVERFLOW_LIMIT
+  }
+
+  // Construct the pcx header
   const headerBuffer = new Uint8Array(128);
   // header, version, encoding, bpp
   headerBuffer[0] = 0x0a;
   headerBuffer[1] = 5;
   headerBuffer[2] = 1;
   headerBuffer[3] = 8;
+  // xmin, ymin
+  headerBuffer[4] = xmin & 0xff;
+  headerBuffer[5] = (xmin >> 8) & 0xff;
+  headerBuffer[6] = ymin & 0xff;
+  headerBuffer[7] = (ymin >> 8) & 0xff;
   // xmax, ymax
-  headerBuffer[8] = (width - 1) & 0xff;
-  headerBuffer[9] = ((width - 1) >> 8) & 0xff;
-  headerBuffer[10] = (height - 1) & 0xff;
-  headerBuffer[11] = ((height - 1) >> 8) & 0xff;
+  headerBuffer[8] = xmax & 0xff;
+  headerBuffer[9] = (xmax >> 8) & 0xff;
+  headerBuffer[10] = ymax & 0xff;
+  headerBuffer[11] = (ymax >> 8) & 0xff;
   // horzRes, vertRes as set by elma.exe
   headerBuffer[12] = 10;
   headerBuffer[14] = 10;
