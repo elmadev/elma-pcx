@@ -1,3 +1,5 @@
+## 1.1.2
+* Bugfix for ESM support without --es-module-specifier-resolution
 ## 1.1.1
 * Bugfix for .pcx files with width/heights in the range 32768-65535
 ## 1.1.0

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import pngjs from 'pngjs';
-import { Sprite, ABC8, DefaultLGRPalette } from '../src';
+import { Sprite, ABC8, DefaultLGRPalette } from '../lib/cjs/index';
 
 test('Directly Opening a SPR File', () => {
   const getSpr = async (filename, buffname, buff2name) => {

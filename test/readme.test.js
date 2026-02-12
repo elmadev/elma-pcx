@@ -1,7 +1,7 @@
 import fs from 'fs';
 import pngjs from 'pngjs';
 import { LGR } from 'elmajs';
-import { PCX, Transparency, writePCX, DefaultLGRPalette, ABC8 } from '../src';
+import { PCX, Transparency, writePCX, DefaultLGRPalette, ABC8 } from '../lib/cjs/index';
 
 if (!fs.existsSync('./temp/')) {
   fs.mkdirSync('./temp/');

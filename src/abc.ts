@@ -1,4 +1,4 @@
-import { arrayEqual } from './utils';
+import { arrayEqual } from './utils.js';
 
 const SPRITE_TRANSPARENCY_HEADER = new Uint8Array([
   0x53, 0x50, 0x52, 0x49, 0x54, 0x45, 0x00,

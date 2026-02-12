@@ -1,4 +1,4 @@
-import { arrayEqual } from '../src/utils';
+import { arrayEqual } from '../lib/cjs/utils';
 
 describe.each([
   [new Uint8Array([0]), new Uint8Array([0]), true],

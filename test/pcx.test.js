@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { PCX, writePCX, DefaultLGRPalette, Transparency } from '../src';
+import { PCX, writePCX, DefaultLGRPalette, Transparency } from '../lib/cjs/index';
 
 test('PCX read/write keeps file identity', () => {
   const file = fs.readFileSync('./test/assets/pcx/snp00000.pcx');

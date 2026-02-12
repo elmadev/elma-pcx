@@ -1,0 +1,10 @@
+Generate granular access token on https://www.npmjs.com
+
+Create .npmrc file with the contents:
+
+//registry.npmjs.org/:_authToken=npm_XXXXXXXX
+
+Then,
+
+npm login
+npm run publish
